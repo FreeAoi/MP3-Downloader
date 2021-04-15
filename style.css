@@ -1,0 +1,198 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+html {
+    box-sizing: border-box;
+}
+
+body {
+  background-color:#121212;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+.titlebar {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  width:  100%;
+  overflow: hidden;
+  user-select: none;
+  display: flex;
+  z-index: 10;
+  padding: 0;
+  justify-content: space-between;
+  text-align: center;
+  color: #FFF;
+  line-height: 2;
+  font-family: Roboto;
+}
+
+.titlebar .left {
+  padding: 0 20px;
+  background-color: #272727;
+  border-bottom-right-radius: 6px;
+}
+
+.titlebar .right {
+  background-color: #272727;
+  border-bottom-left-radius: 6px;
+  display: flex;
+  text-align: center;
+  position: relative;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.titlebar .right .icon-container {
+  height: 100%;
+  display: inline-block;
+  width: 46px;
+}
+
+.titlebar .right .icon-container .close {
+  background: url("data:image/svg+xml;charset=utf-8,%3Csvg width='11' height='11' viewBox='0 0 11 11' fill='%238e8e8e' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6.279 5.5L11 10.221l-.779.779L5.5 6.279.779 11 0 10.221 4.721 5.5 0 .779.779 0 5.5 4.721 10.221 0 11 .779 6.279 5.5z' fill='%23FFF'/%3E%3C/svg%3E") 50% 50%;
+  background-repeat: no-repeat;
+  width: 44px;
+  height: 100%;
+  text-align: center;
+}
+
+.titlebar .right .icon-container .minimize {
+  background: url("data:image/svg+xml;charset=utf-8,%3Csvg width='11' height='11' viewBox='0 0 11 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 4.399V5.5H0V4.399h11z' fill='%23FFF'/%3E%3C/svg%3E") 50% 50%;
+  background-repeat: no-repeat;
+  width: 44px;
+  height: 100%;
+  text-align: center;
+}
+
+.titlebar .right .icon-container .maximize {
+  background: url("data:image/svg+xml;charset=utf-8,%3Csvg width='11' height='11' viewBox='0 0 11 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 8.798H8.798V11H0V2.202h2.202V0H11v8.798zm-3.298-5.5h-6.6v6.6h6.6v-6.6zM9.9 1.1H3.298v1.101h5.5v5.5h1.1v-6.6z' fill='%23FFF'/%3E%3C/svg%3E") 50% 50%;
+  background-repeat: no-repeat;
+  width: 44px;
+  height: 100%;
+  text-align: center;
+}
+
+.titlebar .right .icon-container:hover {
+  cursor: pointer;
+  background-color: #181818;
+}
+
+.after-titlebar {
+  margin: 20px 10px;
+} 
+
+.download-input {
+  position:absolute;                 
+  bottom:0;                         
+  left:0; 
+  width: 100%;
+}
+
+.input_url {
+  width: 100%;
+  height: 50px;
+  background-color: #303030;
+  border: solid 1px #424242;
+  color: #FFF;
+  font-size: 16px;
+  font-family: Roboto;
+  padding: 0 10px;
+}
+
+.input_url:focus {
+  outline: none;
+}
+
+.download_button {
+  background-color: #3E50B4;
+  height: 50px;
+  border: solid 1px #4c61d6;
+  outline: none;
+  font-size: 16px;
+  font-family: Roboto;
+  color: #FFF;
+}
+
+.download_button:hover {
+  cursor: pointer;
+  background-color: #293b9c;
+}
+
+.download_button:disabled,
+.download_button[disabled]{
+  background-color: #667aee;
+  cursor: no-drop;
+}
+
+.downloads-container {
+  position: fixed;
+	top: 48%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background-color: #303030;
+  border: 6px;
+  overflow-y: scroll;
+}
+
+.downloads-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.downloads-container::-webkit-scrollbar-track {
+  background: #121212;
+}
+
+.downloads-container::-webkit-scrollbar-thumb {
+  background-color: #272727;
+  border-radius: 20px;
+}
+
+.downloads-container .video_container {
+  position: relative;
+  width: 100%;
+  height: 15%;
+  border-bottom: solid 2px #424242;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  color: rgb(255, 255, 255, 0.7);
+  font-family: Roboto;
+}
+
+
+
+.downloads-container .video_container:hover {
+  background-color: #222222;
+  cursor: pointer;
+}
+
+.downloads-container .video_container div {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.downloads-container .video_container .thumbnail {
+  height: 100%;
+  width: 13%;
+  border-radius: 10px;
+}
+
+.downloads-container .video_container .thumbnail img {
+  max-width:100%;
+  max-height:100%;
+  height: 100%;
+  /* height: 100%;
+  width: 10%;
+  border-radius: 10px; */
+}
