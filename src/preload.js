@@ -12,7 +12,7 @@ const pages = Object.fromEntries(fs.readdirSync(path.join(__dirname, "pages"))
 document.addEventListener("DOMContentLoaded", () => {
     // Menu (sidebar)
     let page = "queue";
-    function renderSelectedPage() {
+    (function renderSelectedPage() {
         document.querySelectorAll("#main > .menu > div")
             .forEach((element) => {
                 // Selected page
@@ -30,8 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (pages[page])
             document.getElementById("pageContent")
                 .outerHTML = pages[page];
-    }
-    renderSelectedPage();
+    })();
 
 
     // Titlebar
