@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Roboto");
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Quicksand&display=swap');
 
 html, body {
     margin: 0;
@@ -63,6 +63,7 @@ html, body {
     background-color: #e00d0d !important;
 }
 
+/* Main Content (pages) */
 #main {
     width: 100%;
     height: 100%;
@@ -114,7 +115,7 @@ html, body {
 
 #main > .content > #pageContent {
     height: 100%;
-    padding: 15px 0px 0px 20px;
+    padding: 15px 20px;
     background-color: #121212;
     border-top-left-radius: 15px;
 }

@@ -9,6 +9,8 @@ app.whenReady().then(() => {
     const win = new BrowserWindow({
         width: 900,
         height: 480,
+        minWidth: 360,
+        minHeight: 440,
         frame: false,
         titleBarStyle: "hidden",
         webPreferences: {

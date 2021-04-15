@@ -15,6 +15,8 @@
     "@electron/remote": "^1.1.0",
     "electron": "^12.0.2",
     "electron-reload": "^1.5.0",
+    "mustache": "^4.2.0",
+    "youtube-sr": "^4.0.4",
     "ytdl-core": "^4.5.0"
   }
 }
