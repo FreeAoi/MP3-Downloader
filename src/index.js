@@ -18,7 +18,7 @@ app.whenReady().then(() => {
         }
     });
 
-    win.loadFile(path.join(__dirname, "index.html"));
+    win.loadFile(path.join(__dirname, "pages", "index.html"));
     // win.webContents.openDevTools();
 });
 
