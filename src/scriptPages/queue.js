@@ -1,40 +1,33 @@
-/* document.getElementById("download").addEventListener("click", () => {
-        let url = document.getElementById("video_url");
-        let temporalId = Date.now();
-        const downloadsFolder = (electron.app || electron.remote.app).getPath("downloads");
-        document.getElementById("download").setAttribute("disabled", "");
-
-        ytdl(url.value, { filter: "audioonly", quality: "highestaudio" })
-            .on("info", (info, _) => {
-                let thumbnails = info.videoDetails.thumbnails;
-                videoName = info.videoDetails.title;
-                console.log(videoName);
-                document.getElementById("musics").insertAdjacentHTML("beforeend", `
-                <div class="video_container">
-                    <div class="thumbnail"><img src="${thumbnails[thumbnails.length - 1].url}" /></div>
-                    <div class="name">${info.videoDetails.title}</div>
-                    <div id="state">Descargando... 0%</div>
-                </div>
-              `);
-                url.value = "";
-            })
-            .on("progress", (_, downloaded, total) => {
-                let progress = (downloaded / total) * 100;
-                document.getElementById("state").innerHTML = `Descargando... ${progress.toFixed(0)}%`;
-            })
-            .on("end", () => {
-                let elem = document.getElementById("state");
-                elem.innerHTML = "Descarga Completa";
-                elem.removeAttribute("id");
-                document.getElementById("download").removeAttribute("disabled");
-                console.log(videoName);
-                let oldPath = `${downloadsFolder}/${temporalId}.mp3`;
-                let newPath = `${downloadsFolder}/${videoName.replace(/[^a-zA-Z ]/g, "")}.mp3`;
-                fs.renameSync(oldPath, newPath);
-            })
-            .pipe(fs.createWriteStream(`${downloadsFolder}/${temporalId}.mp3`));
-    }); */
+const { renderComponent, queue } = require("../util");
 
 module.exports = () => {
-    console.log('Hello World from Queue Page');
+    const container = document.getElementById("videos");
+
+    function renderResults() {
+        if (queue.array().length < 1) return (container.style.flexDirection = "row");
+        container.style.flexDirection = "column";
+        container.innerHTML = queue.array().map((video) =>
+            renderComponent("resultVideo", {
+                title: video.title,
+                id: video.id,
+                author: video.channel.name,
+                authorAvatar: video.channel.icon.url,
+                thumbnail: video.thumbnail.url,
+                downloaded: queue.has(video.id),
+                percentage: queue.has(video.id) ? queue.get(video.id).progress : 0
+            })).join("");
+        document.querySelectorAll("#videos > .video > .buttons > .downloaded")
+            .forEach((element) => {
+                queue.get(element.parentElement.parentElement.id)
+                    .stream.on("progress", (_, downloaded, total) => {
+                        element.innerHTML = parseInt((downloaded / total) * 100);
+                    });
+            });
+    }
+
+    // Render everytime the user goes to that page
+    renderResults();
+
+    // Check if the status of a video has been changed (when they click the download button)
+    queue.onChange(renderResults);
 };

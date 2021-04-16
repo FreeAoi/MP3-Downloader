@@ -4,6 +4,7 @@ const fs = require("fs");
 
 const currentWindow = electron.getCurrentWindow();
 
+// Find all pages in the pages folder and load save HTML and script
 const pages = Object.fromEntries(fs.readdirSync(path.join(__dirname, "pages"))
     .filter((p) => p.match(/\.html$/, "") && p !== "index.html")
     .map((p) => {

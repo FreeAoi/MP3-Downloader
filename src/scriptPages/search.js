@@ -1,5 +1,5 @@
+const { renderComponent, queue } = require("../util");
 const { search } = require("youtube-sr").default;
-const { renderComponent } = require("../util");
 
 let previousSearch = "";
 let previousResults = [];
@@ -7,7 +7,7 @@ let previousResults = [];
 module.exports = () => {
     const input = document.getElementById("searchBar");
     const button = document.getElementById("searchSubmit");
-    const container = document.getElementById("searchResults");
+    const container = document.getElementById("videos");
 
     function renderResults() {
         container.style.flexDirection = "column";
@@ -17,14 +17,27 @@ module.exports = () => {
                 id: video.id,
                 author: video.channel.name,
                 authorAvatar: video.channel.icon.url,
-                thumbnail: video.thumbnail.url
+                thumbnail: video.thumbnail.url,
+                downloaded: queue.has(video.id),
+                percentage: queue.has(video.id) ? queue.get(video.id).progress : 0
             })).join("");
-        document.querySelectorAll("#searchResults > .video > .buttons > .download")
+        document.querySelectorAll("#videos > .video > .buttons > .download")
             .forEach((element) =>
                 element.onclick = () => {
-                    console.log('add queue', element.parentElement.parentElement.id);
+                    if (queue.has(element.parentElement.parentElement.id)) return;
+                    queue.add(element.parentElement.parentElement.id, previousResults.find((v) => v.id === element.parentElement.parentElement.id));
                 });
-    };
+        document.querySelectorAll("#videos > .video > .buttons > .downloaded")
+            .forEach((element) => {
+                queue.get(element.parentElement.parentElement.id)
+                    .stream.on("progress", (_, downloaded, total) => {
+                        element.innerHTML = parseInt((downloaded / total) * 100);
+                    });
+            });
+    }
+
+    // Check if the status of a video has been changed (when they click the download button)
+    queue.onChange(renderResults);
 
     // Render Previous Things if the user changes the page
     if (previousResults.length > 1) {
