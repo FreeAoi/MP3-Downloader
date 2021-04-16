@@ -1,0 +1,17 @@
+<div class="video" id="{{id}}">
+    <img src="{{thumbnail}}" alt="{{title}}" class="thumbnail">
+    <div class="titles">
+        <p>{{title}}</p>
+        <small>
+            <img src="{{authorAvatar}}" alt="{{author}}" class="avatar"> {{author}}
+        </small>
+    </div>
+    <div class="buttons">
+        {{^downloaded}}
+        <div class="download"></div>
+        {{/downloaded}}
+        {{#downloaded}}
+        <div class="downloaded">{{percentage}}</div>
+        {{/downloaded}}
+    </div>
+</div>
