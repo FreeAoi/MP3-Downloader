@@ -8,8 +8,8 @@ require("electron-reload")(__dirname);
 app.whenReady().then(() => {
     const win = new BrowserWindow({
         width: 900,
-        height: 480,
-        minWidth: 360,
+        height: 440,
+        minWidth: 550,
         minHeight: 440,
         frame: false,
         titleBarStyle: "hidden",

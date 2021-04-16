@@ -21,7 +21,7 @@ const pages = Object.fromEntries(fs.readdirSync(path.join(__dirname, "pages"))
 
 document.addEventListener("DOMContentLoaded", () => {
     // Menu (sidebar)
-    let page = "search";
+    let page = "queue";
     (function renderSelectedPage() {
         document.querySelectorAll("#main > .menu > div")
             .forEach((element) => {

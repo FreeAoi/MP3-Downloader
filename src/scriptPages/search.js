@@ -13,9 +13,18 @@ module.exports = () => {
         container.style.flexDirection = "column";
         container.innerHTML = previousResults.map((video) =>
             renderComponent("resultVideo", {
-                message: video.title
+                title: video.title,
+                id: video.id,
+                author: video.channel.name,
+                authorAvatar: video.channel.icon.url,
+                thumbnail: video.thumbnail.url
             })).join("");
-    }
+        document.querySelectorAll("#searchResults > .video > .buttons > .download")
+            .forEach((element) =>
+                element.onclick = () => {
+                    console.log('add queue', element.parentElement.parentElement.id);
+                });
+    };
 
     // Render Previous Things if the user changes the page
     if (previousResults.length > 1) {

@@ -8,6 +8,10 @@ html, body {
     font-family: "Roboto", sans-serif;
 }
 
+img {
+    user-select: none;
+    pointer-events: none;
+}
 
 /* Titlebar */
 #titlebar {
