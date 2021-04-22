@@ -1,8 +1,9 @@
-import { app } from '@electron/remote';
-import Mustache from 'mustache';
-import ytdl from 'ytdl-core';
-import path from 'path';
-import fs from 'fs';
+import { app } from "@electron/remote";
+import { Video } from "youtube-sr";
+import Mustache from "mustache";
+import ytdl from "ytdl-core";
+import path from "path";
+import fs from "fs";
 
 Map.prototype._listeners = [];
 Map.prototype.onChange = function (callback) {
@@ -21,7 +22,7 @@ Map.prototype.add = function (id, data) {
         filter: "audioonly",
         quality: "highestaudio"
     });
-    stream.pipe(fs.createWriteStream(path.join(app.getPath("downloads"), `${data.title.match(/[a-z _\-\d]/gi).join('')}.ytd.mp3`)));
+    stream.pipe(fs.createWriteStream(path.join(app.getPath("downloads"), `${data.title!.match(/[a-z _\-\d]/gi)?.join("")}.ytd.mp3`)));
     data.progress = 0;
     stream.on("progress", (_, downloaded, total) => {
         data.progress = (downloaded / total) * 100;
@@ -35,9 +36,9 @@ Map.prototype.remove = function (id) {
     this.change();
 };
 
-exports.queue = new Map();
+export const queue = new Map<string, Video>();
 
-exports.renderComponent = (component, options) =>
+export const renderComponent = (component: string, options: Record<string, any>) =>
     Mustache.render(
         fs.readFileSync(
             path.join(__dirname, "components", `${component}.html`),

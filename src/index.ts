@@ -1,7 +1,7 @@
 require("@electron/remote/main").initialize();
 
-import { BrowserWindow, app } from 'electron';
-import path from 'path';
+import { BrowserWindow, app } from "electron";
+import path from "path";
 
 app.whenReady().then(() => {
     const win = new BrowserWindow({
@@ -19,7 +19,7 @@ app.whenReady().then(() => {
     });
 
     win.loadFile(path.join(__dirname, "pages", "index.html"));
-    win.webContents.openDevTools();
+    // win.webContents.openDevTools();
 });
 
 app.on("window-all-closed", () => {
