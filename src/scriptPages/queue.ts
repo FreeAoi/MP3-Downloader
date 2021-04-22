@@ -1,7 +1,7 @@
-const { renderComponent, queue } = require("../util");
+import { renderComponent, queue } from "../util";
 
-module.exports = () => {
-    const container = document.getElementById("videos");
+export default function () {
+    const container = document.getElementById("videos") as HTMLDivElement;
 
     function renderResults() {
         if (queue.array().length < 1) return (container.style.flexDirection = "row");
@@ -10,17 +10,17 @@ module.exports = () => {
             renderComponent("resultVideo", {
                 title: video.title,
                 id: video.id,
-                author: video.channel.name,
-                authorAvatar: video.channel.icon.url,
-                thumbnail: video.thumbnail.url,
-                downloaded: queue.has(video.id),
-                percentage: queue.has(video.id) ? queue.get(video.id).progress : 0
+                author: video.channel!.name,
+                authorAvatar: video.channel!.icon.url,
+                thumbnail: video.thumbnail!.url,
+                downloaded: queue.has(video.id!),
+                percentage: queue.has(video.id!) ? queue.get(video.id!)!.progress : 0
             })).join("");
-        document.querySelectorAll("#videos > .video > .buttons > .downloaded")
+        document.querySelectorAll<HTMLDivElement>("#videos > .video > .buttons > .downloaded")
             .forEach((element) => {
-                queue.get(element.parentElement.parentElement.id)
+                queue.get(element.parentElement!.parentElement!.id)!
                     .stream.on("progress", (_, downloaded, total) => {
-                        element.innerHTML = parseInt((downloaded / total) * 100);
+                        element.innerHTML = ((downloaded / total) * 100).toString();
                     });
             });
     }

@@ -1,9 +1,17 @@
 {
   "compilerOptions": {
-      "target": "es2020",         
-      "module": "commonjs",    
-      "strict": true,          
-      "esModuleInterop": true,    
-      "outDir": "./build"
-  }
+    "target": "ESNext",
+    "lib": [
+      "DOM",
+      "ESNext",
+    ],
+    "esModuleInterop": true,
+    "module": "CommonJS",
+    "strict": true,
+    "outDir": "./build"
+  },
+  "exclude": [
+    "node_modules",
+    "build"
+  ]
 }
