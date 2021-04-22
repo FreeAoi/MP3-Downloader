@@ -1,9 +1,7 @@
 require("@electron/remote/main").initialize();
 
-const { BrowserWindow, app } = require("electron");
-const path = require("path");
-
-require("electron-reload")(__dirname);
+import { BrowserWindow, app } from 'electron';
+import path from 'path';
 
 app.whenReady().then(() => {
     const win = new BrowserWindow({
