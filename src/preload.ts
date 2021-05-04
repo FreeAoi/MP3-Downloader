@@ -10,7 +10,7 @@ const pages: { [page: string]: [string, () => any]; } = Object.fromEntries(fs.re
     .map((p) => {
         let module: () => any = () => void 0;
         try {
-            let tempModule = require(`./scriptPages/${p.replace(/\.html$/, "")}.js`);
+            let tempModule = require(`./scriptPages/${p.replace(/\.html$/, "")}.js`)?.default;
             if (tempModule instanceof Function)
                 module = tempModule;
         } catch { }
