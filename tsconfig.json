@@ -1,4 +1,7 @@
 {
+  "exclude": [
+    "src/client/"
+  ],
   "compilerOptions": {
     "target": "ESNext",
     "lib": [
@@ -7,11 +10,9 @@
     ],
     "esModuleInterop": true,
     "module": "CommonJS",
-    "strict": true,
-    "outDir": "./build"
+    "moduleResolution": "node",
+    "outDir": "./build",
+    "jsx": "react-jsx"
   },
-  "exclude": [
-    "node_modules",
-    "build"
-  ]
 }
+

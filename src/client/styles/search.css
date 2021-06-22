@@ -3,7 +3,7 @@
     margin-bottom: 18px;
 }
 
-.search > .bar > #searchBar {
+.search > .bar > .searchBar {
     flex: 1;
     color: #ccc;
     border: none;
@@ -16,7 +16,7 @@
     font-family: 'Roboto', sans-serif;
 }
 
-.search > .bar > #searchSubmit {
+.search > .bar > .searchSubmit {
     width: 50px;
     border: none;
     outline: none;
@@ -29,11 +29,11 @@
     background-repeat: no-repeat;
 }
 
-.search > .bar > #searchSubmit:active {
+.search > .bar > .searchSubmit:active {
     filter: opacity(0.6);
 }
 
-.search > .bar > #searchSubmit[disabled] {
+.search > .bar > .searchSubmit[disabled] {
     filter: opacity(0.6);
     pointer-events: none;
 }
