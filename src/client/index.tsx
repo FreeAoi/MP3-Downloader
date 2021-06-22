@@ -1,7 +1,12 @@
-import loadable from '@loadable/component';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { HashRouter } from 'react-router-dom';
 
-const App = loadable(() => import('./app'))
+import VideosProvider from './context';
+import App from './app';
 
-ReactDOM.render(<App/>, document.querySelector("#root"));
+ReactDOM.render(<VideosProvider>
+    <HashRouter>
+        <App />
+    </HashRouter>
+</VideosProvider>, document.querySelector("#root"));

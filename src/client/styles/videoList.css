@@ -1,5 +1,5 @@
 .videos {
-    height: 70%;
+    height: 70vh;
     overflow: auto;
     border-radius: 4px;
     border: 1px solid #272b36;
@@ -16,12 +16,16 @@
 }
 
 .videos > h4 {
-    flex: 1;
     margin: 0;
+    height: 100%;
+    display: flex;
     user-select: none;
     font-style: italic;
     align-self: center;
     text-align: center;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
     font-family: 'Quicksand', sans-serif;
 }
 
@@ -81,7 +85,6 @@
     width: 34px;
     height: 34px;
     padding: 4px;
-    cursor: pointer;
 }
 
 .videos > .video > .buttons > *:not(:first-child) {
@@ -90,6 +93,7 @@
 }
 
 .videos > .video > .buttons > .download {
+    cursor: pointer;
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 0 512 512' width='24'%3E%3Cg id='Solid'%3E%3Cpath d='m239.029 384.97a24 24 0 0 0 33.942 0l90.509-90.509a24 24 0 0 0 0-33.941 24 24 0 0 0 -33.941 0l-49.539 49.539v-262.059a24 24 0 0 0 -48 0v262.059l-49.539-49.539a24 24 0 0 0 -33.941 0 24 24 0 0 0 0 33.941z' style='&%2310; fill: %23cccc;&%2310;'/%3E%3Cpath d='m464 232a24 24 0 0 0 -24 24v184h-368v-184a24 24 0 0 0 -48 0v192a40 40 0 0 0 40 40h384a40 40 0 0 0 40-40v-192a24 24 0 0 0 -24-24z' style='&%2310; fill: %23ccc;&%2310;'/%3E%3C/g%3E%3C/svg%3E") 50% 50%;
     background-repeat: no-repeat;
 }
@@ -165,12 +169,12 @@
 
 @media screen and (min-height: 640px) {
     .videos {
-        height: 78vh;
+        height: 82vh;
     }
 }
 
 @media screen and (min-height: 730px) {
     .videos {
-        height: 80vh;
+        height: 90vh;
     }
 }

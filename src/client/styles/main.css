@@ -108,7 +108,7 @@ img {
     background-repeat: no-repeat;
 }
 
-.main > .menu > .selected {
+.main > .menu > a > div.selected {
     background-color: #333333 !important;
 }
 

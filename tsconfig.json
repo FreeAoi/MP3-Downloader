@@ -12,7 +12,6 @@
     "module": "CommonJS",
     "moduleResolution": "node",
     "outDir": "./build",
-    "jsx": "react-jsx"
+    "jsx": "react"
   },
 }
-
