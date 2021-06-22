@@ -1,12 +1,12 @@
-require("@electron/remote/main").initialize();
-
 import { BrowserWindow, app, ipcMain } from "electron";
 import ytdl from "ytdl-core";
 import path from "path";
 import fs from 'fs';
 
+let win: BrowserWindow | null;
+
 app.whenReady().then((): void => {
-    const win = new BrowserWindow({
+    win = new BrowserWindow({
         width: 900,
         height: 440,
         minWidth: 550,
@@ -14,29 +14,47 @@ app.whenReady().then((): void => {
         frame: false,
         titleBarStyle: "hidden",
         webPreferences: {
-            preload: path.join(__dirname, "preload.js"),
-            enableRemoteModule: true,
-            nodeIntegration: true
+            nodeIntegration: false,
+            contextIsolation: true,
+            enableRemoteModule: false,
+            preload: path.join(__dirname, 'preload.js')
         }
     });
 
     win.loadFile(path.join(__dirname, "client", "index.html"));
-    // win.webContents.openDevTools();
 });
 
-ipcMain.on("start-download", (event, arg) => {
-    const { id, title } = arg;
-    const stream = ytdl(`http://www.youtube.com/watch?v=${id}`, {
+ipcMain.on("start-download", (event, { id, title }) => {
+    const stream = ytdl(`https://www.youtube.com/watch?v=${id}`, {
         filter: "audioonly",
         quality: "highestaudio"
     });
-    stream.pipe(fs.createWriteStream(path.join(app.getPath("downloads"), `${title.match(/[a-z _\-\d]/gi)?.join("")}.ytd.mp3`)))
+    stream.pipe(fs.createWriteStream(path.join(app.getPath("downloads"), `${title.match(/[a-z _\-\d]/gi)?.join("")}.ytd.mp3`)));
 
     stream.on("progress", (_, downloaded, total) => {
-        event.reply("download-progress", (downloaded / total));
+        if (!isNaN(downloaded) && !isNaN(total))
+            event.sender.send("download-progress", {
+                id, progress: (downloaded / total)
+            });
     });
-})
+});
 
-app.on("window-all-closed", (): void => {
+ipcMain.on("window-buttons", (_, type) => {
+    if (!win) return;
+    switch (type) {
+        case 'minimize':
+            win.minimize();
+            break;
+        case 'maximize':
+            if (win.isMaximized()) win.unmaximize();
+            else win.maximize();
+            break;
+        case 'close':
+            win.close();
+            break;
+    }
+});
+
+app.on("window-all-closed", () => {
     app.quit();
 });

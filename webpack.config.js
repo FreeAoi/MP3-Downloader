@@ -5,11 +5,10 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const WebpackBar = require("webpackbar");
 
 module.exports = {
+  mode: process.env.NODE_ENV || 'production',
   entry: {
     app: path.join(__dirname, "src/client/index.tsx"),
-
   },
-  mode: "production",
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
   },
@@ -31,7 +30,7 @@ module.exports = {
             loader: "css-loader",
             options: {
               modules: {
-                localIdentName: "[path][name]__[local]--[hash:base64:5]",
+                localIdentName: "[local]-[hash:base64:5]",
               },
             },
           },
@@ -42,22 +41,21 @@ module.exports = {
   optimization: {
     minimize: true,
     minimizer: [
-      new CssMinimizerPlugin()
+      new CssMinimizerPlugin(),
+      '...'
     ],
   },
-  cache: {
-    type: 'filesystem',
-  },
   output: {
+    uniqueName: 'MP3Downloader',
     filename: "[name].js",
     path: path.resolve(__dirname, "build/client"),
   },
   plugins: [
-    new HtmlwebpackPlugin({
-      template: path.join(__dirname, "src/client/index.html"),
-    }),
     new WebpackBar({
       name: "Youtube MP3 Downloader",
+    }),
+    new HtmlwebpackPlugin({
+      template: path.join(__dirname, "src/client/index.html"),
     }),
     new MiniCssExtractPlugin()
   ],
