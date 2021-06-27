@@ -1,7 +1,14 @@
-import { BrowserWindow, app, ipcMain } from "electron";
+
+import { BrowserWindow, app, ipcMain, dialog } from "electron";
 import ytdl from "ytdl-core";
+import MeowDB from "meowdb";
 import path from "path";
 import fs from 'fs';
+
+const config = new MeowDB({
+    dir: __dirname,
+    name: "config"
+});
 
 let win: BrowserWindow | null;
 
@@ -24,12 +31,20 @@ app.whenReady().then((): void => {
     win.loadFile(path.join(__dirname, "client", "index.html"));
 });
 
+ipcMain.on("select-directory", async () => {
+    let [dir] = dialog.showOpenDialogSync(win, { properties: ["openDirectory"] }) || [];
+    if(!dir) return;
+    config.set("downloadDir", dir);
+});
+
 ipcMain.on("start-download", (event, { id, title }) => {
     const stream = ytdl(`https://www.youtube.com/watch?v=${id}`, {
         filter: "audioonly",
         quality: "highestaudio"
     });
-    stream.pipe(fs.createWriteStream(path.join(app.getPath("downloads"), `${title.match(/[a-z _\-\d]/gi)?.join("")}.ytd.mp3`)));
+
+    let dir = config.get<string>("downloadDir") || app.getPath("downloads");
+    stream.pipe(fs.createWriteStream(path.join(dir, `${title.match(/[a-z _\-\d]/gi)?.join("")}.ytd.mp3`)));
 
     stream.on("progress", (_, downloaded, total) => {
         if (!isNaN(downloaded) && !isNaN(total))

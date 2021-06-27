@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 export default function Queue() {
     const { videos } = useContext(VideosContext);
-    const downloadingVideos = Object.values(videos).filter((v) => v.progress < 100);
+    const downloadingVideos = Object.values(videos).filter((v) => v.progress < 1);
 
     return (
         <div className={style.queue}>

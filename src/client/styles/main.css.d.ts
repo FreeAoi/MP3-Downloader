@@ -10,7 +10,7 @@ declare const styles: {
   readonly "menu": string;
   readonly "queue": string;
   readonly "search": string;
-  readonly "history": string;
+  readonly "config": string;
   readonly "selected": string;
   readonly "content": string;
   readonly "background": string;

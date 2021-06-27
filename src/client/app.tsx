@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Route, Switch, useLocation } from "react-router-dom";
 
-import History from "./screens/history";
+import Config from "./screens/config";
 import Search from "./screens/search";
 import Queue from "./screens/queue";
 
@@ -47,8 +47,8 @@ export default function App() {
 					<Link to="/">
 						<div className={`${style.search} ${location.pathname === '/' ? style.selected : ''}`}></div>
 					</Link>
-					<Link to="/history">
-						<div className={`${style.history} ${location.pathname === '/history' ? style.selected : ''}`}></div>
+					<Link to="/config">
+						<div className={`${style.config} ${location.pathname === '/config' ? style.selected : ''}`}></div>
 					</Link>
 				</div>
 				<div className={style.content}>
@@ -61,8 +61,8 @@ export default function App() {
 							<Route path="/queue">
 								<Queue />
 							</Route>
-							<Route path="/history">
-								<History />
+							<Route path="/config">
+								<Config />
 							</Route>
 						</Switch>
 					</div>
