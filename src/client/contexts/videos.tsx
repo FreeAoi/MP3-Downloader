@@ -15,7 +15,7 @@ export const VideosContext = createContext<IContext>({
     addVideo: () => void 0,
 });
 
-export default class VideosP extends React.Component {
+export default class VideosProvider extends React.Component {
     state = {
         videos: {}
     } as Record<'videos', Record<string, Video>>;
@@ -35,7 +35,7 @@ export default class VideosP extends React.Component {
                 [id]: video
             }
         });
-    };
+    }
 
 
     addVideo(video: RawVideo) {
@@ -49,7 +49,7 @@ export default class VideosP extends React.Component {
             }
         });
         window['MP3DownloaderAPI'].download(video.id, video.title);
-    };
+    }
 
     render() {
         const videos = this.state.videos;

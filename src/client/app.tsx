@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, Route, Switch, useLocation } from "react-router-dom";
 
 import Config from "./screens/config";
 import Search from "./screens/search";
 import Queue from "./screens/queue";
 
+import { VideosContext } from './contexts/videos';
 import style from "./styles/main.css";
 
 export default function App() {
 	const [maximized, setMaximized] = useState(false);
+	const { videos } = useContext(VideosContext);
 	const location = useLocation();
 
 	useEffect(() => {
@@ -28,6 +30,11 @@ export default function App() {
 			document.getElementById('close').removeEventListener('click', () => onClick('close'));
 		};
 	}, []);
+
+	window['MP3DownloaderAPI'].setPresence({
+		page: location.pathname.slice(1) || 'search',
+		videos: Object.keys(videos).length
+	});
 
 	return (
 		<div>

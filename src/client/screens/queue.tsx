@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
+import { VideosContext } from '../contexts/videos';
 import videoStyle from '../styles/videoList.css';
-import { VideosContext } from '../context';
 import style from '../styles/queue.css';
 import Video from '../components/Video';
 import { Link } from 'react-router-dom';

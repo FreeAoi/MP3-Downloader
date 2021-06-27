@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useContext } from 'react';
 
+import { VideosContext } from '../contexts/videos';
 import styles from '../styles/videoList.css';
-import { VideosContext } from '../context';
 
 interface Props {
     id: string;

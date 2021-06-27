@@ -1,7 +1,7 @@
 import { Video as RawVideo } from 'youtube-sr';
 import React, { useContext } from 'react';
 
-import { VideosContext } from '../context';
+import { VideosContext } from '../contexts/videos';
 import styles from '../styles/videoList.css';
 import DownloadCanvas from './DownloadCanvas';
 

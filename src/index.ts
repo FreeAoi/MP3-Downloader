@@ -1,16 +1,18 @@
-
 import { BrowserWindow, app, ipcMain, dialog } from "electron";
+import { Client } from 'discord-rpc';
 import ytdl from "ytdl-core";
 import MeowDB from "meowdb";
 import path from "path";
 import fs from 'fs';
 
-const config = new MeowDB({
-    dir: __dirname,
-    name: "config"
+const config = new MeowDB<'raw'>({
+    dir: app.getPath('userData'),
+    name: "config",
+    raw: true
 });
 
 let win: BrowserWindow | null;
+let client: Client | null;
 
 app.whenReady().then((): void => {
     win = new BrowserWindow({
@@ -28,16 +30,26 @@ app.whenReady().then((): void => {
         }
     });
 
+    client = new Client({ transport: 'ipc' });
+
+    client.on('ready', () => client.setActivity({
+        state: 'Opening MP3Downloader',
+        startTimestamp: Date.now()
+    })).login({ clientId: '' });
+
     win.loadFile(path.join(__dirname, "client", "index.html"));
 });
 
-ipcMain.on("select-directory", async () => {
-    let [dir] = dialog.showOpenDialogSync(win, { properties: ["openDirectory"] }) || [];
-    if(!dir) return;
-    config.set("downloadDir", dir);
+ipcMain.on("select-directory", (event, name) => {
+    if (!win) return;
+    let [dir] = dialog.showOpenDialogSync(win, {
+        properties: ["openDirectory"],
+    }) || [app.getPath('downloads')];
+    config.set(name, dir);
+    event.sender.send('update-config', { [name]: dir });
 });
 
-ipcMain.on("start-download", (event, { id, title }) => {
+ipcMain.on("start-download", (event, { id, title }: { id: string; title: string; }) => {
     const stream = ytdl(`https://www.youtube.com/watch?v=${id}`, {
         filter: "audioonly",
         quality: "highestaudio"
@@ -54,7 +66,7 @@ ipcMain.on("start-download", (event, { id, title }) => {
     });
 });
 
-ipcMain.on("window-buttons", (_, type) => {
+ipcMain.on("window-buttons", (_, type: string) => {
     if (!win) return;
     switch (type) {
         case 'minimize':
@@ -69,6 +81,17 @@ ipcMain.on("window-buttons", (_, type) => {
             break;
     }
 });
+
+ipcMain.on('update-discordrpc', (_, data: { page: 'queue' | 'search' | 'settings'; videos: number; }) => {
+    if (!client || config.create('disableDiscordRPC', false)) return;
+    client.setActivity({
+        state: `On ${data.page} page`,
+        details: `Videos queued ${data.videos}`,
+    });
+});
+
+ipcMain.on('request-config', (event) =>
+    event.sender.send('update-config', config.all()));
 
 app.on("window-all-closed", () => {
     app.quit();

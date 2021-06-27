@@ -17,14 +17,16 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "meowdb": "^2.2.2",
+    "discord-rpc": "^4.0.1",
+    "meowdb": "^2.2.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0",
     "youtube-sr": "^4.1.5",
-    "ytdl-core": "github:D3SOX/node-ytdl-core#fix-info-endpoint-404"
+    "ytdl-core": "^4.8.3"
   },
   "devDependencies": {
+    "@types/discord-rpc": "^3.0.5",
     "@types/node": "^15.12.4",
     "@types/react": "^17.0.5",
     "@types/react-dom": "^17.0.3",
