@@ -1,8 +1,10 @@
 import { BrowserWindow, app, ipcMain, dialog } from "electron";
+import { GithubResponse } from './typings/github';
+import { exec, execFile } from 'child_process';
 import { Client } from 'discord-rpc';
-import ytdl from "ytdl-core";
 import MeowDB from "meowdb";
 import path from "path";
+import phin from 'phin';
 import fs from 'fs';
 
 const config = new MeowDB<'raw'>({
@@ -22,6 +24,7 @@ app.whenReady().then((): void => {
         minHeight: 440,
         frame: false,
         titleBarStyle: "hidden",
+        icon: path.join(__dirname, '../icon.png'),
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
@@ -35,9 +38,35 @@ app.whenReady().then((): void => {
     client.on('ready', () => client.setActivity({
         state: 'Opening MP3Downloader',
         startTimestamp: Date.now()
-    })).login({ clientId: '' });
+    })).login({ clientId: '' }).catch(() => (client = null));
 
     win.loadFile(path.join(__dirname, "client", "index.html"));
+});
+
+ipcMain.on("check-updates", async (event) => {
+    const lastUpdate = config.get<number>('lastYTDLUpdate');
+    if (lastUpdate && (Date.now() - lastUpdate) < 432e5) return event.sender.send('update-confirmation', true);
+    const res: phin.IJSONResponse<GithubResponse> = await phin({
+        url: 'https://api.github.com/repos/ytdl-org/youtube-dl/releases?per_page=1',
+        parse: 'json', headers: { 'User-Agent': process.platform }
+    }).catch(() => null);
+    if (!res || !res.body || res.statusCode !== 200)
+        return event.sender.send('update-confirmation', false);
+    if (res.body[0].tag_name === config.get<string>('YTDLVersion')) return event.sender.send('update-confirmation', true);
+    const asset = res.body[0].assets.find((a) => a.name === (process.platform === 'win32' ? 'youtube-dl.exe' : 'youtube-dl'));
+    const downloadRes = await phin({
+        url: asset.browser_download_url,
+        followRedirects: true
+    }).catch(() => (event.sender.send('update-confirmation', false), null));
+    if (!downloadRes || !downloadRes.body) return event.sender.send('update-confirmation', false);
+    fs.writeFile(path.join(app.getPath('userData'), asset.name),
+        downloadRes.body, (e) => {
+            if (!e) {
+                config.set('lastYTDLUpdate', Date.now());
+                config.set('YTDLVersion', res.body[0].tag_name);
+            }
+            event.sender.send('update-confirmation', !e);
+        });
 });
 
 ipcMain.on("select-directory", (event, name) => {
@@ -50,18 +79,15 @@ ipcMain.on("select-directory", (event, name) => {
 });
 
 ipcMain.on("start-download", (event, { id, title }: { id: string; title: string; }) => {
-    const stream = ytdl(`https://www.youtube.com/watch?v=${id}`, {
-        filter: "audioonly",
-        quality: "highestaudio"
-    });
+    const dir = config.get<string>("downloadsDirectory") || app.getPath("downloads");
+    const child = exec(path.join(app.getPath('userData'), (process.platform === 'win32' ? 'youtube-dl.exe' : 'youtube-dl'))
+        + [' -x', '--audio-format mp3', '--audio-quality 0', `https://www.youtube.com/watch?v=${id}`, `-o ${JSON.stringify(path.join(dir, `${title.match(/[a-z _\-\d]/gi)?.join("").trim()}.ytd.mp3`))}`].join(' '));
 
-    let dir = config.get<string>("downloadDir") || app.getPath("downloads");
-    stream.pipe(fs.createWriteStream(path.join(dir, `${title.match(/[a-z _\-\d]/gi)?.join("")}.ytd.mp3`)));
-
-    stream.on("progress", (_, downloaded, total) => {
-        if (!isNaN(downloaded) && !isNaN(total))
+    child.stdout.on('data', (data) => {
+        const progress = data.toString().match(/\d{1,3}\.\d?%/gi);
+        if (progress?.[0])
             event.sender.send("download-progress", {
-                id, progress: (downloaded / total)
+                id, progress: parseInt(progress[0].slice(0, -1)) / 100
             });
     });
 });

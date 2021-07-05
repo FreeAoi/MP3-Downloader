@@ -16,6 +16,33 @@ img {
     user-select: none;
     pointer-events: none;
 }
+
+/* Loading Screen */
+.loading {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.loading > .bar {
+    width: 50vh;
+    height: 14px;
+    position: relative;
+    border-radius: 12px;
+    border: 3px solid #ccc;
+}
+
+.loading > .bar > div {
+    width: 50vh;
+    height: 14px;
+    position: absolute;
+    border-radius: 12px;
+    background-color: #fff;
+    animation: loading 2s linear infinite;
+}
+
 /* Titlebar */
 .titlebar {
     display: flex;
@@ -134,4 +161,30 @@ img {
 .pageContent > div > h1 {
     margin-top: 0;
     margin-bottom: 1vh;
+}
+
+@keyframes loading {
+    0% {
+        left: 0%;
+        right: 100%;
+        width: 0%;
+    }
+
+    10% {
+        left:0%;
+        right:75%;
+        width:25%;
+    }
+
+    90% {
+        right:0%;
+        left:75%;
+        width:25%;
+    }
+
+    100% {
+        right: 0%;
+        left: 100%;
+        width: 0%;
+    }
 }

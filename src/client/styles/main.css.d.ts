@@ -1,4 +1,6 @@
 declare const styles: {
+  readonly "loading": string;
+  readonly "bar": string;
   readonly "titlebar": string;
   readonly "title": string;
   readonly "buttons": string;

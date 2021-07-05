@@ -12,6 +12,7 @@
     "module": "CommonJS",
     "moduleResolution": "node",
     "outDir": "./build",
-    "jsx": "react"
+    "jsx": "react",
+    "skipLibCheck": true
   },
 }

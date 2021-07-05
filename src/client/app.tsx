@@ -11,9 +11,19 @@ import style from "./styles/main.css";
 export default function App() {
 	const [maximized, setMaximized] = useState(false);
 	const { videos } = useContext(VideosContext);
+	const [loaded, setLoaded] = useState(false);
 	const location = useLocation();
 
+	const checkUpdates = () => {
+		window['MP3DownloaderAPI'].onUpdateConfirm((_, data) => setLoaded(data));
+		window['MP3DownloaderAPI'].checkUpdates();
+	};
+
+	useEffect(() => checkUpdates(), []);
+
 	useEffect(() => {
+		if (!loaded) return () => { };
+
 		const onClick = (type: string) => {
 			if (type === 'maximize')
 				setMaximized(!document.getElementById(type).classList.contains(style.max));
@@ -29,12 +39,18 @@ export default function App() {
 			document.getElementById('maximize').removeEventListener('click', () => onClick('maximize'));
 			document.getElementById('close').removeEventListener('click', () => onClick('close'));
 		};
-	}, []);
+	}, [loaded]);
 
 	window['MP3DownloaderAPI'].setPresence({
 		page: location.pathname.slice(1) || 'search',
 		videos: Object.keys(videos).length
 	});
+
+	if (!loaded)
+		return (<div className={style.loading}>
+			<h1>MP3 Downloader</h1>
+			<div className={style.bar}><div></div></div>
+		</div>);
 
 	return (
 		<div>
