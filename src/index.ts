@@ -81,7 +81,7 @@ ipcMain.on("select-directory", (event, name) => {
 ipcMain.on("start-download", (event, { id, title }: { id: string; title: string; }) => {
     const dir = config.get<string>("downloadsDirectory") || app.getPath("downloads");
     const child = exec(path.join(app.getPath('userData'), (process.platform === 'win32' ? 'youtube-dl.exe' : 'youtube-dl'))
-        + [' -x', '--audio-format mp3', '--audio-quality 0', `https://www.youtube.com/watch?v=${id}`, `-o ${JSON.stringify(path.join(dir, `${title.match(/[a-z _\-\d]/gi)?.join("").trim()}.ytd.mp3`))}`].join(' '));
+        + [' -x', '--audio-format mp3', '--audio-quality 0', `https://www.youtube.com/watch?v=${id}`, `-o ${JSON.stringify(path.join(dir, `${title.match(/[a-z _\-\d]/gi)?.join("").trim()}.ytd.mp3`))}`, '--no-mtime'].join(' '));
 
     child.stdout.on('data', (data) => {
         const progress = data.toString().match(/\d{1,3}\.\d?%/gi);
