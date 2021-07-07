@@ -6,7 +6,6 @@ contextBridge.exposeInMainWorld('MP3DownloaderAPI', {
     selectDirectory: (name: string) => ipcRenderer.send("select-directory", name),
     onProgress: (cb: any) => ipcRenderer.on('download-progress', cb),
     onConfigUpdate: (cb: any) => ipcRenderer.on('update-config', cb),
-    setPresence: (data: Record<string, string>) => ipcRenderer.send('update-discordrpc', data),
     requestConfig: () => ipcRenderer.send('request-config'),
     onUpdateConfirm: (cb: any) => ipcRenderer.once('update-confirmation', cb),
     checkUpdates: () => ipcRenderer.send('check-updates')

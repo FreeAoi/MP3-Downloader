@@ -41,11 +41,6 @@ export default function App() {
 		};
 	}, [loaded]);
 
-	window['MP3DownloaderAPI'].setPresence({
-		page: location.pathname.slice(1) || 'search',
-		videos: Object.keys(videos).length
-	});
-
 	if (!loaded)
 		return (<div className={style.loading}>
 			<h1>MP3 Downloader</h1>
