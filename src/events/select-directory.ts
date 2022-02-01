@@ -1,4 +1,4 @@
-import { BrowserWindow, dialog } from "electron";
+import { dialog } from "electron";
 import { config, app, win } from '../index';
 
 export default function(event, name) {

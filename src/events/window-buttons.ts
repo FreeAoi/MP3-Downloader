@@ -1,4 +1,3 @@
-import { BrowserWindow } from 'electron';
 import { win } from '../index';
 
 export default function(_, type:string) {

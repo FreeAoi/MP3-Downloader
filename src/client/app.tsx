@@ -44,6 +44,7 @@ export default function App() {
 	if (!loaded)
 		return (<div className={style.loading}>
 			<h1>MP3 Downloader</h1>
+			<h3>Updating ffmpeg...</h3>
 			<div className={style.bar}><div></div></div>
 		</div>);
 
